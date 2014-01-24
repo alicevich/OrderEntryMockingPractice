@@ -1,23 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="OrderEntryMockingTutorial.Models.Customer">
+  <Class Name="OrderEntryMockingPractice.Models.Customer">
     <Position X="1.25" Y="2.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAQAAAAIIAAAAAAAQAIAABAAAAAAAgAQAAA=</HashCode>
       <FileName>Models\Customer.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="OrderEntryMockingTutorial.Models.Order">
-    <Position X="1.25" Y="0.75" Width="1.5" />
+  <Class Name="OrderEntryMockingPractice.Models.Order">
+    <Position X="0.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAEAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAEAAAAAAAAAAAAAAAAAABAAAAAAAAAAAIA=</HashCode>
       <FileName>Models\Order.cs</FileName>
     </TypeIdentifier>
     <ShowAsCollectionAssociation>
       <Property Name="OrderItems" />
     </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="OrderEntryMockingTutorial.Models.OrderItem">
+  <Class Name="OrderEntryMockingPractice.Models.OrderItem">
     <Position X="3.5" Y="0.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
@@ -27,7 +27,7 @@
       <Property Name="Product" />
     </ShowAsAssociation>
   </Class>
-  <Class Name="OrderEntryMockingTutorial.Models.OrderSummary">
+  <Class Name="OrderEntryMockingPractice.Models.OrderSummary">
     <Position X="3.75" Y="3.75" Width="2" />
     <TypeIdentifier>
       <HashCode>GAAAAAIAAAEAAAAAAAAAAAAAAAAAQBAAAAAIAgAAAAA=</HashCode>
@@ -38,21 +38,21 @@
       <Property Name="Taxes" />
     </ShowAsCollectionAssociation>
   </Class>
-  <Class Name="OrderEntryMockingTutorial.Models.Product">
-    <Position X="6" Y="0.75" Width="1.5" />
+  <Class Name="OrderEntryMockingPractice.Models.Product">
+    <Position X="6.25" Y="0.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>EAAAAAAAAQAgAAAAAAAAAAQAAAAAAAAAEAAAAAAAAAA=</HashCode>
       <FileName>Models\Product.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="OrderEntryMockingTutorial.Models.TaxEntry">
+  <Class Name="OrderEntryMockingPractice.Models.TaxEntry">
     <Position X="8" Y="3.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>QAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Models\TaxEntry.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="OrderEntryMockingTutorial.Services.OrderConfirmation">
+  <Class Name="OrderEntryMockingPractice.Services.OrderConfirmation">
     <Position X="10.25" Y="1.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>EAAAAAIAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAA=</HashCode>

@@ -1,0 +1,5 @@
+C:\Users\AliceV\Documents\Visual Studio 2012\Projects\Order Entry Mocking Practice\OrderEntryMockingPractice\bin\Debug\OrderEntryMockingPractice.dll
+C:\Users\AliceV\Documents\Visual Studio 2012\Projects\Order Entry Mocking Practice\OrderEntryMockingPractice\bin\Debug\OrderEntryMockingPractice.pdb
+C:\Users\AliceV\Documents\Visual Studio 2012\Projects\Order Entry Mocking Practice\OrderEntryMockingPractice\obj\Debug\OrderEntryMockingPractice.csprojResolveAssemblyReference.cache
+C:\Users\AliceV\Documents\Visual Studio 2012\Projects\Order Entry Mocking Practice\OrderEntryMockingPractice\obj\Debug\OrderEntryMockingPractice.dll
+C:\Users\AliceV\Documents\Visual Studio 2012\Projects\Order Entry Mocking Practice\OrderEntryMockingPractice\obj\Debug\OrderEntryMockingPractice.pdb

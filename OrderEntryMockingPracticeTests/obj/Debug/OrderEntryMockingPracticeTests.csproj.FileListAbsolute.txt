@@ -1,0 +1,12 @@
+C:\Users\AliceV\Documents\Visual Studio 2012\Projects\Order Entry Mocking Practice\OrderEntryMockingPracticeTests\obj\Debug\OrderEntryMockingPracticeTests.csprojResolveAssemblyReference.cache
+C:\Users\AliceV\Documents\Visual Studio 2012\Projects\Order Entry Mocking Practice\OrderEntryMockingPracticeTests\bin\Debug\OrderEntryMockingPracticeTests.dll
+C:\Users\AliceV\Documents\Visual Studio 2012\Projects\Order Entry Mocking Practice\OrderEntryMockingPracticeTests\bin\Debug\OrderEntryMockingPracticeTests.pdb
+C:\Users\AliceV\Documents\Visual Studio 2012\Projects\Order Entry Mocking Practice\OrderEntryMockingPracticeTests\bin\Debug\nunit.framework.dll
+C:\Users\AliceV\Documents\Visual Studio 2012\Projects\Order Entry Mocking Practice\OrderEntryMockingPracticeTests\bin\Debug\OrderEntryMockingPractice.dll
+C:\Users\AliceV\Documents\Visual Studio 2012\Projects\Order Entry Mocking Practice\OrderEntryMockingPracticeTests\bin\Debug\Rhino.Mocks.dll
+C:\Users\AliceV\Documents\Visual Studio 2012\Projects\Order Entry Mocking Practice\OrderEntryMockingPracticeTests\bin\Debug\OrderEntryMockingPractice.pdb
+C:\Users\AliceV\Documents\Visual Studio 2012\Projects\Order Entry Mocking Practice\OrderEntryMockingPracticeTests\bin\Debug\nunit.framework.xml
+C:\Users\AliceV\Documents\Visual Studio 2012\Projects\Order Entry Mocking Practice\OrderEntryMockingPracticeTests\bin\Debug\Rhino.Mocks.xml
+C:\Users\AliceV\Documents\Visual Studio 2012\Projects\Order Entry Mocking Practice\OrderEntryMockingPracticeTests\obj\Debug\OrderEntryMockingPracticeTests.dll
+C:\Users\AliceV\Documents\Visual Studio 2012\Projects\Order Entry Mocking Practice\OrderEntryMockingPracticeTests\obj\Debug\OrderEntryMockingPracticeTests.pdb
+C:\Users\AliceV\Documents\Visual Studio 2012\Projects\Order Entry Mocking Practice\OrderEntryMockingPracticeTests\bin\Debug\FizzWare.NBuilder.dll

@@ -15,4 +15,6 @@ namespace OrderEntryMockingPractice.Models
         public double Total { get; set; }
         public DateTime EstimatedDeliveryDate { get; set; }
     }
+
+    
 }
