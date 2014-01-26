@@ -10,3 +10,15 @@ C:\Users\AliceV\Documents\Visual Studio 2012\Projects\Order Entry Mocking Practi
 C:\Users\AliceV\Documents\Visual Studio 2012\Projects\Order Entry Mocking Practice\OrderEntryMockingPracticeTests\obj\Debug\OrderEntryMockingPracticeTests.dll
 C:\Users\AliceV\Documents\Visual Studio 2012\Projects\Order Entry Mocking Practice\OrderEntryMockingPracticeTests\obj\Debug\OrderEntryMockingPracticeTests.pdb
 C:\Users\AliceV\Documents\Visual Studio 2012\Projects\Order Entry Mocking Practice\OrderEntryMockingPracticeTests\bin\Debug\FizzWare.NBuilder.dll
+C:\Users\user\Documents\Visual Studio 2012\Projects\OrderEntryMockingPractice\OrderEntryMockingPracticeTests\obj\Debug\OrderEntryMockingPracticeTests.csprojResolveAssemblyReference.cache
+C:\Users\user\Documents\Visual Studio 2012\Projects\OrderEntryMockingPractice\OrderEntryMockingPracticeTests\bin\Debug\OrderEntryMockingPracticeTests.dll
+C:\Users\user\Documents\Visual Studio 2012\Projects\OrderEntryMockingPractice\OrderEntryMockingPracticeTests\bin\Debug\OrderEntryMockingPracticeTests.pdb
+C:\Users\user\Documents\Visual Studio 2012\Projects\OrderEntryMockingPractice\OrderEntryMockingPracticeTests\bin\Debug\FizzWare.NBuilder.dll
+C:\Users\user\Documents\Visual Studio 2012\Projects\OrderEntryMockingPractice\OrderEntryMockingPracticeTests\bin\Debug\nunit.framework.dll
+C:\Users\user\Documents\Visual Studio 2012\Projects\OrderEntryMockingPractice\OrderEntryMockingPracticeTests\bin\Debug\OrderEntryMockingPractice.dll
+C:\Users\user\Documents\Visual Studio 2012\Projects\OrderEntryMockingPractice\OrderEntryMockingPracticeTests\bin\Debug\Rhino.Mocks.dll
+C:\Users\user\Documents\Visual Studio 2012\Projects\OrderEntryMockingPractice\OrderEntryMockingPracticeTests\bin\Debug\OrderEntryMockingPractice.pdb
+C:\Users\user\Documents\Visual Studio 2012\Projects\OrderEntryMockingPractice\OrderEntryMockingPracticeTests\bin\Debug\nunit.framework.xml
+C:\Users\user\Documents\Visual Studio 2012\Projects\OrderEntryMockingPractice\OrderEntryMockingPracticeTests\bin\Debug\Rhino.Mocks.xml
+C:\Users\user\Documents\Visual Studio 2012\Projects\OrderEntryMockingPractice\OrderEntryMockingPracticeTests\obj\Debug\OrderEntryMockingPracticeTests.dll
+C:\Users\user\Documents\Visual Studio 2012\Projects\OrderEntryMockingPractice\OrderEntryMockingPracticeTests\obj\Debug\OrderEntryMockingPracticeTests.pdb

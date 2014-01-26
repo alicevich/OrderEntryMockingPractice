@@ -3,3 +3,8 @@ C:\Users\AliceV\Documents\Visual Studio 2012\Projects\Order Entry Mocking Practi
 C:\Users\AliceV\Documents\Visual Studio 2012\Projects\Order Entry Mocking Practice\OrderEntryMockingPractice\obj\Debug\OrderEntryMockingPractice.csprojResolveAssemblyReference.cache
 C:\Users\AliceV\Documents\Visual Studio 2012\Projects\Order Entry Mocking Practice\OrderEntryMockingPractice\obj\Debug\OrderEntryMockingPractice.dll
 C:\Users\AliceV\Documents\Visual Studio 2012\Projects\Order Entry Mocking Practice\OrderEntryMockingPractice\obj\Debug\OrderEntryMockingPractice.pdb
+C:\Users\user\Documents\Visual Studio 2012\Projects\OrderEntryMockingPractice\OrderEntryMockingPractice\bin\Debug\OrderEntryMockingPractice.dll
+C:\Users\user\Documents\Visual Studio 2012\Projects\OrderEntryMockingPractice\OrderEntryMockingPractice\bin\Debug\OrderEntryMockingPractice.pdb
+C:\Users\user\Documents\Visual Studio 2012\Projects\OrderEntryMockingPractice\OrderEntryMockingPractice\obj\Debug\OrderEntryMockingPractice.dll
+C:\Users\user\Documents\Visual Studio 2012\Projects\OrderEntryMockingPractice\OrderEntryMockingPractice\obj\Debug\OrderEntryMockingPractice.pdb
+C:\Users\user\Documents\Visual Studio 2012\Projects\OrderEntryMockingPractice\OrderEntryMockingPractice\obj\Debug\OrderEntryMockingPractice.csprojResolveAssemblyReference.cache
