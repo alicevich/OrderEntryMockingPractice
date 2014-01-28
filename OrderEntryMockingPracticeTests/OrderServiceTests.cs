@@ -17,31 +17,31 @@ namespace OrderEntryMockingPracticeTests
     {
         [SetUp]
         public void SetUp(){
-            this.mockProductRepository = MockRepository.GenerateMock<IProductRepository>();
-            this.mockOrderFulfillmentService = MockRepository.GenerateMock<IOrderFulfillmentService>();
-            this.mockCustomerRepository = MockRepository.GenerateMock<ICustomerRepository>();
-            this.mockTaxRateService = MockRepository.GenerateMock<ITaxRateService>();
-            this.mockEmailService = MockRepository.GenerateMock<IEmailService>();
+            this.MockProductRepository = MockRepository.GenerateMock<IProductRepository>();
+            this.MockOrderFulfillmentService = MockRepository.GenerateMock<IOrderFulfillmentService>();
+            this.MockCustomerRepository = MockRepository.GenerateMock<ICustomerRepository>();
+            this.MockTaxRateService = MockRepository.GenerateMock<ITaxRateService>();
+            this.MockEmailService = MockRepository.GenerateMock<IEmailService>();
         }
 
-        protected IProductRepository mockProductRepository { get; set; }
-        protected IOrderFulfillmentService mockOrderFulfillmentService { get; set; }
-        protected ICustomerRepository mockCustomerRepository { get; set; }
-        protected ITaxRateService mockTaxRateService { get; set; }
-        protected IEmailService mockEmailService { get; set; }
+        protected IProductRepository MockProductRepository { get; set; }
+        protected IOrderFulfillmentService MockOrderFulfillmentService { get; set; }
+        protected ICustomerRepository MockCustomerRepository { get; set; }
+        protected ITaxRateService MockTaxRateService { get; set; }
+        protected IEmailService MockEmailService { get; set; }
 
         [Test]
         public void PlaceOrder_WhenOrderItemsAreNotUnique_ThrowsValidationFailedException()
         {
             // Arrange
-            var orderService = new OrderService(null, mockOrderFulfillmentService, mockCustomerRepository, mockTaxRateService, mockEmailService);
+            var orderService = new OrderService(null, MockOrderFulfillmentService, MockCustomerRepository, MockTaxRateService, MockEmailService);
+            
             var order = MockRepository.GenerateStub<Order>();
-
-            // Act
             order
                 .Stub(o => o.OrderItemsAreUniqueByProduct())
                 .Return(false);
-
+            
+            // Act
             var exception = Assert.Throws<ValidationFailedException>(() => orderService.PlaceOrder(order));
 
             // Assert
@@ -52,10 +52,9 @@ namespace OrderEntryMockingPracticeTests
         public void PlaceOrder_WhenOrderItemsAreUnique_DoesNotThrowValidationFailedException()
         {
             // Arrange
-            var orderService = new OrderService(null, mockOrderFulfillmentService, mockCustomerRepository, mockTaxRateService, mockEmailService);
+            var orderService = new OrderService(null, MockOrderFulfillmentService, MockCustomerRepository, MockTaxRateService, MockEmailService);
+            
             var order = MockRepository.GenerateStub<Order>();
-
-            // Act
             order
                 .Stub(o => o.OrderItemsAreUniqueByProduct())
                 .Return(true);
@@ -64,7 +63,7 @@ namespace OrderEntryMockingPracticeTests
             GenerateNewListOfTaxEntries();
             GenerateNewOrderConfirmation(order);
 
-            // Assert
+            // Act / Assert
             Assert.DoesNotThrow(() => orderService.PlaceOrder(order));
         }
 
@@ -72,8 +71,8 @@ namespace OrderEntryMockingPracticeTests
         public void PlaceOrder_SomeProductsAreNotInStock_ThrowsValidationFailedException()
         {
             // Arrange
-            var orderService = new OrderService(mockProductRepository, mockOrderFulfillmentService, mockCustomerRepository, mockTaxRateService, mockEmailService);
-            var order = CreateInvalidOrderContainingProductsOutOfStock(mockProductRepository);
+            var orderService = new OrderService(MockProductRepository, MockOrderFulfillmentService, MockCustomerRepository, MockTaxRateService, MockEmailService);
+            var order = CreateInvalidOrderContainingProductsOutOfStock(MockProductRepository);
 
             // Act
             var exception = Assert.Throws<ValidationFailedException>(() => orderService.PlaceOrder(order));
@@ -114,15 +113,14 @@ namespace OrderEntryMockingPracticeTests
         public void PlaceOrder_AllOrderItemsInStock_DoesNotThrowValidationFailedException()
         {
             // Arrange
-            var orderService = new OrderService(mockProductRepository, mockOrderFulfillmentService, mockCustomerRepository, mockTaxRateService, mockEmailService);
-            var order = CreateAValidOrder(mockProductRepository);
+            var orderService = new OrderService(MockProductRepository, MockOrderFulfillmentService, MockCustomerRepository, MockTaxRateService, MockEmailService);
+            var order = CreateAValidOrder(MockProductRepository);
 
-            // Act
             GenerateNewCustomer(order);
             GenerateNewListOfTaxEntries();
             GenerateNewOrderConfirmation(order);
 
-            // Assert
+            // Act / Assert
             Assert.DoesNotThrow(() => orderService.PlaceOrder(order));
         }
 
@@ -158,131 +156,120 @@ namespace OrderEntryMockingPracticeTests
         public void PlaceOrder_OrderIsValid_ReturnsOrderSummary()
         {
             // Arrange
-            var orderService = new OrderService(mockProductRepository, mockOrderFulfillmentService, mockCustomerRepository, mockTaxRateService, mockEmailService);
-            var order = CreateAValidOrder(mockProductRepository);
+            var orderService = new OrderService(MockProductRepository, MockOrderFulfillmentService, MockCustomerRepository, MockTaxRateService, MockEmailService);
+            var order = CreateAValidOrder(MockProductRepository);
 
-            // Act
             GenerateNewCustomer(order);
             GenerateNewListOfTaxEntries();
             GenerateNewOrderConfirmation(order);
 
+            // Act
             var result = orderService.PlaceOrder(order);
 
             // Assert
-            Assert.That(result, Is.Not.Null);
+            Assert.That(result,Is.Not.Null);
+            Assert.That(result.CustomerId, Is.EqualTo(order.CustomerId));
         }
 
         [Test]
         public void PlaceOrder_OrderIsValid_OrderIsSubmittedToOrderFulfillmentService()
         {
             // Arrange
-            var orderService = new OrderService(mockProductRepository, mockOrderFulfillmentService, mockCustomerRepository, mockTaxRateService, mockEmailService);
-            var order = CreateAValidOrder(mockProductRepository);
+            var orderService = new OrderService(MockProductRepository, MockOrderFulfillmentService, MockCustomerRepository, MockTaxRateService, MockEmailService);
+            var order = CreateAValidOrder(MockProductRepository);
 
-            // Act
             GenerateNewCustomer(order);
             GenerateNewListOfTaxEntries();
 
-            mockOrderFulfillmentService
+            MockOrderFulfillmentService
                 .Expect(ofs => ofs.Fulfill(order))
                 .Return(new OrderConfirmation());
 
-            // Assert
+            // Act / Assert
             Assert.DoesNotThrow(() => orderService.PlaceOrder(order));
-            mockOrderFulfillmentService.VerifyAllExpectations();
+            MockOrderFulfillmentService.VerifyAllExpectations();
         }
 
         [Test]
         public void PlaceOrder_OrderIsValid_ReturnsOrderSummaryContainingOrderNumberGeneratedByOrderFulfillmentService()
         {
             // Arrange
-            var orderService = new OrderService(mockProductRepository, mockOrderFulfillmentService, mockCustomerRepository, mockTaxRateService, mockEmailService);
-            var order = CreateAValidOrder(mockProductRepository);
+            var orderService = new OrderService(MockProductRepository, MockOrderFulfillmentService, MockCustomerRepository, MockTaxRateService, MockEmailService);
+            var order = CreateAValidOrder(MockProductRepository);
 
-            string expectedOrderNumber = "AL435DSD";
-            var orderConfirmation = new OrderConfirmation()
-                                    {
-                                        OrderNumber = expectedOrderNumber
-                                    };
-
-            // Act
             GenerateNewCustomer(order);
             GenerateNewListOfTaxEntries();
-
-            mockOrderFulfillmentService
+            
+            var orderConfirmation = CreateValidOrderConfirmation();
+            MockOrderFulfillmentService
                 .Stub(ofs => ofs.Fulfill(order))
                 .Return(orderConfirmation);
-
+            
+            // Act
             var orderSummary = orderService.PlaceOrder(order);
             var result = orderSummary.OrderNumber;
+            var expected = orderConfirmation.OrderNumber;
 
             // Assert
-            Assert.That(result, Is.EqualTo(expectedOrderNumber));
+            Assert.That(result, Is.EqualTo(expected));
+        }
+
+        private static OrderConfirmation CreateValidOrderConfirmation()
+        {
+            return new OrderConfirmation()
+                {
+                    OrderNumber = "AL435DSD",
+                    OrderId = 3242
+                };
         }
 
         [Test]
         public void PlaceOrder_OrderIsValid_ReturnsOrderSummaryContainingOrderIDGeneratedByOrderFulfillmentService()
         {
             // Arrange
-            var orderService = new OrderService(mockProductRepository, mockOrderFulfillmentService, mockCustomerRepository, mockTaxRateService, mockEmailService);
-            var order = CreateAValidOrder(mockProductRepository);
+            var orderService = new OrderService(MockProductRepository, MockOrderFulfillmentService, MockCustomerRepository, MockTaxRateService, MockEmailService); 
+            var order = CreateAValidOrder(MockProductRepository);
 
-            int expectedOrderID = 3242;
-            var orderConfirmation = new OrderConfirmation()
-                                    {
-                                        OrderId = expectedOrderID
-                                    };
-
-            // Act
             GenerateNewCustomer(order);
             GenerateNewListOfTaxEntries();
 
-            mockOrderFulfillmentService
+            var orderConfirmation = CreateValidOrderConfirmation();
+            MockOrderFulfillmentService
                 .Stub(ofs => ofs.Fulfill(order))
                 .Return(orderConfirmation);
-
+            
+            // Act
             var orderSummary = orderService.PlaceOrder(order);
             var result = orderSummary.OrderId;
+            var expected = orderConfirmation.OrderId;
 
             // Assert
-            Assert.That(result, Is.EqualTo(expectedOrderID));
+            Assert.That(result, Is.EqualTo(expected));
         }
 
         [Test]
         public void PlaceOrder_OrderIsValid_ReturnsOrderSummaryWithTaxEntries()
         {
             // Arrange
-            var orderService = new OrderService(mockProductRepository, mockOrderFulfillmentService, mockCustomerRepository, mockTaxRateService, mockEmailService);
-            var order = CreateAValidOrder(mockProductRepository);
-            order.CustomerId = 123;
+            var orderService = new OrderService(MockProductRepository, MockOrderFulfillmentService, MockCustomerRepository, MockTaxRateService, MockEmailService);
 
-            var customer = new Customer()
-                            {
-                                CustomerId = 123,
-                                PostalCode = "98168",
-                                Country = "USA"
-                            };
+            var customer = CreateValidCustomer();
+            var taxEntriesList = CreateValidTaxEntriesList();
 
-            var taxEntry = new TaxEntry()
-                            {
-                                Description = "State Sales tax",
-                                Rate = 9.0
-                            };
+            var order = CreateAValidOrder(MockProductRepository);
+            order.CustomerId = customer.CustomerId;
 
-            var taxEntriesList = new List<TaxEntry>();
-            taxEntriesList.Add(taxEntry);
-
-            // Act
             GenerateNewOrderConfirmation(order);
 
-            mockCustomerRepository
-                .Stub(cr => cr.Get(order.CustomerId))
-                .Return(customer);
-
-            mockTaxRateService
+            MockCustomerRepository
+              .Stub(cr => cr.Get(order.CustomerId))
+              .Return(customer);
+            
+            MockTaxRateService
                 .Stub(trs => trs.GetTaxEntries(customer.PostalCode, customer.Country))
                 .Return(taxEntriesList);
 
+            // Act
             var orderSummary = orderService.PlaceOrder(order);
             var orderSummaryTaxEntries = orderSummary.Taxes;
 
@@ -290,24 +277,58 @@ namespace OrderEntryMockingPracticeTests
             Assert.That(orderSummaryTaxEntries, Is.EqualTo(taxEntriesList));
         }
 
+        private static IEnumerable<TaxEntry> CreateValidTaxEntriesList()
+        {
+            var taxEntry = CreateValidTaxEntry();
+
+            var taxEntriesList = new List<TaxEntry>();
+            taxEntriesList.Add(taxEntry);
+            return taxEntriesList;
+        }
+
+        private static TaxEntry CreateValidTaxEntry()
+        {
+            return new TaxEntry()
+                {
+                    Description = "State Sales tax",
+                    Rate = 9.0
+                };
+        }
+
+        private static Customer CreateValidCustomer()
+        {
+            var customer = new Customer()
+                {
+                    CustomerId = 123,
+                    AddressLine1 = "5th ave s",
+                    City = "Seattle",
+                    Country = "USA",
+                    CustomerName = "Bob",
+                    EmailAddress = "Bobby7@gmail.com",
+                    PostalCode = "98168",
+                    StateOrProvince = "WA"
+                };
+            return customer;
+        }
+
         [Test]
         public void PlaceOrder_OrderIsValid_ReturnsOrderSummaryWithNetTotal()
         {
             // Arrange
-            var orderService = new OrderService(mockProductRepository, mockOrderFulfillmentService, mockCustomerRepository, mockTaxRateService, mockEmailService);
+            var orderService = new OrderService(MockProductRepository, MockOrderFulfillmentService, MockCustomerRepository, MockTaxRateService, MockEmailService);
             var orderItems = CreateListOfOrderItems();
             var order = new Order()
                         {
                             OrderItems = orderItems
                         };
 
-            // Act
             GenerateNewCustomer(order);
             GenerateNewListOfTaxEntries();
             GenerateNewOrderConfirmation(order);
 
+            // Act
             double expectedResult = 0;
-            foreach (var orderItem in orderItems)
+            foreach(var orderItem in orderItems)
             {
                 expectedResult += (((double)orderItem.Product.Price) * orderItem.Quantity);
             }
@@ -323,7 +344,7 @@ namespace OrderEntryMockingPracticeTests
         public void PlaceOrder_OrderIsValid_ReturnsOrderSummaryContainingOrderTotal()
         {
             // Arrange
-            var orderService = new OrderService(mockProductRepository, mockOrderFulfillmentService, mockCustomerRepository, mockTaxRateService, mockEmailService);
+            var orderService = new OrderService(MockProductRepository, MockOrderFulfillmentService, MockCustomerRepository, MockTaxRateService, MockEmailService);
             var orderItems = CreateListOfOrderItems();
             var order = new Order()
                         {
@@ -331,45 +352,33 @@ namespace OrderEntryMockingPracticeTests
                             OrderItems = orderItems
                         };
 
-            var customer = new Customer()
-                            {
-                                CustomerId = 123,
-                                PostalCode = "98168",
-                                Country = "USA"
-                            };
+            var customer = CreateValidCustomer();
+            var taxEntry = CreateValidTaxEntry();
+            var taxEntriesList = new List<TaxEntry> {taxEntry};
 
-            var taxEntry = new TaxEntry()
-                            {
-                                Description = "State Sales tax",
-                                Rate = 9.0
-                            };
-
-            var taxEntriesList = new List<TaxEntry>();
-            taxEntriesList.Add(taxEntry);
-
-            // Act
             GenerateNewOrderConfirmation(order);
 
-            mockCustomerRepository
+            MockCustomerRepository
                 .Stub(cr => cr.Get(order.CustomerId))
                 .Return(customer);
 
-            mockTaxRateService
+            MockTaxRateService
                 .Stub(trs => trs.GetTaxEntries(customer.PostalCode, customer.Country))
                 .Return(taxEntriesList);
 
+            // Act
             var orderSummary = orderService.PlaceOrder(order);
             var orderSummaryTaxEntries = orderSummary.Taxes;
+            var result = orderSummary.Total;
 
             double tax = 0;
-            foreach (var entry in orderSummary.Taxes)
+            foreach(var entry in orderSummary.Taxes)
             {
                 tax += (orderSummary.NetTotal * (entry.Rate / 100));
             }
 
             var expectedResult = tax + orderSummary.NetTotal;
-            var result = orderSummary.Total;
-
+         
             // Assert
             Assert.That(result, Is.EqualTo(expectedResult));
         }
@@ -378,51 +387,43 @@ namespace OrderEntryMockingPracticeTests
         public void PlaceOrder_OrderIsValid_ConfirmationEmailIsSentToCustomer()
         {
             // Arrange
-            var orderService = new OrderService(mockProductRepository, mockOrderFulfillmentService, mockCustomerRepository, mockTaxRateService, mockEmailService);
-            var order = CreateAValidOrder(mockProductRepository);
+            var orderService = new OrderService(MockProductRepository, MockOrderFulfillmentService, MockCustomerRepository, MockTaxRateService, MockEmailService);
+            var order = CreateAValidOrder(MockProductRepository);
 
-            // Act
             GenerateNewCustomer(order);
             GenerateNewListOfTaxEntries();
             GenerateNewOrderConfirmation(order);
-            mockEmailService
-                .Expect(es => es.SendOrderConfirmationEmail(order.CustomerId, mockOrderFulfillmentService.Fulfill(order).OrderId));
-        
-            // Assert
+
+            var customerId = order.CustomerId;
+            var orderId = MockOrderFulfillmentService.Fulfill(order).OrderId;
+
+            MockEmailService
+                .Expect(es => es.SendOrderConfirmationEmail(customerId,orderId));
+
+            // Act / Assert
             Assert.DoesNotThrow(() => orderService.PlaceOrder(order));
-            mockEmailService.VerifyAllExpectations();
+            MockEmailService.VerifyAllExpectations();
         }
 
         [Test] 
         public void GetCustomerData__CustomerIdIsValid_ReturnCustomerContainingData()
         {
             // Arrange
-            var orderService = new OrderService(mockProductRepository, mockOrderFulfillmentService, mockCustomerRepository, mockTaxRateService, mockEmailService);
+            var orderService = new OrderService(MockProductRepository, MockOrderFulfillmentService, MockCustomerRepository, MockTaxRateService, MockEmailService);
+            var expectedCustomer = CreateValidCustomer();
             var order = new Order()
                         {
-                            CustomerId = 123
+                            CustomerId = expectedCustomer.CustomerId
                         };
 
-            var expectedCustomer = new Customer()
-                            {
-                                CustomerId = 123,
-                                AddressLine1 = "5th ave s",
-                                City = "Seattle",
-                                Country = "USA",
-                                CustomerName = "Bob",
-                                EmailAddress = "Bobby7@gmail.com",
-                                PostalCode = "98168",
-                                StateOrProvince = "WA"
-                            };
-
-            // Act
             GenerateNewListOfTaxEntries();
             GenerateNewOrderConfirmation(order);
 
-            mockCustomerRepository
+            MockCustomerRepository
                 .Stub(cr => cr.Get(order.CustomerId))
                 .Return(expectedCustomer);
-           
+
+            // Act
             var result = orderService.GetCustomer(order.CustomerId);
 
             // Assert 
@@ -433,35 +434,24 @@ namespace OrderEntryMockingPracticeTests
         public void GetTaxRates__CustomerIdIsValid_ReturnListOfTaxRates()
         {
             // Arrange
-            var orderService = new OrderService(mockProductRepository, mockOrderFulfillmentService, mockCustomerRepository, mockTaxRateService, mockEmailService);
+            var orderService = new OrderService(MockProductRepository, MockOrderFulfillmentService, MockCustomerRepository, MockTaxRateService, MockEmailService);
+            var customer = CreateValidCustomer();
             var order = new Order()
-            {
-                CustomerId = 123
-            };
+                        {
+                            CustomerId = customer.CustomerId
+                        };
 
-            var customer = new Customer()
-            {
-                CustomerId = 123,
-                Country = "USA",
-                PostalCode = "98168"
-            };
+            var taxEntry = CreateValidTaxEntry();
+            var taxEntries = new List<TaxEntry> {taxEntry};
 
-            var taxEntries = new List<TaxEntry>();
-            var taxEntry = new TaxEntry()
-                            {
-                                Description = "State Sales Tax",
-                                Rate = 9.5
-                            };
-            taxEntries.Add(taxEntry);
-
-            // Act
             GenerateNewOrderConfirmation(order);
             GenerateNewCustomer(order);
 
-            mockTaxRateService
+            MockTaxRateService
                 .Stub(trs => trs.GetTaxEntries(customer.PostalCode, customer.Country))
                 .Return(taxEntries);
 
+            // Act
             var result = orderService.GetTaxRates(customer.PostalCode, customer.Country);
 
             // Assert 
@@ -470,21 +460,21 @@ namespace OrderEntryMockingPracticeTests
 
         private void GenerateNewOrderConfirmation(Order order)
         {
-            mockOrderFulfillmentService
+            MockOrderFulfillmentService
                 .Stub(ofs => ofs.Fulfill(order))
                 .Return(new OrderConfirmation());
         }
 
         private void GenerateNewListOfTaxEntries()
         {
-            mockTaxRateService
+            MockTaxRateService
                 .Stub(trs => trs.GetTaxEntries("", ""))
                 .Return(new List<TaxEntry>());
         }
 
         private void GenerateNewCustomer(Order order)
         {
-            mockCustomerRepository
+            MockCustomerRepository
                 .Stub(cr => cr.Get(order.CustomerId))
                 .Return(new Customer());
         }
@@ -505,8 +495,9 @@ namespace OrderEntryMockingPracticeTests
                                         Price = 5
                                     };
                 orderItem.Quantity = 2;
-                mockProductRepository
-                    .Stub(pr => pr.IsInStock(orderItem.Product.Sku))
+                OrderItem item = orderItem;
+                MockProductRepository
+                    .Stub(pr => pr.IsInStock(item.Product.Sku))
                     .Return(true);
             }
             return orderItems;
