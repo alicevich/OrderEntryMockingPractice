@@ -362,7 +362,7 @@ namespace OrderEntryMockingPracticeTests
             double tax = 0;
             foreach(var entry in orderSummary.Taxes)
             {
-                tax += (orderSummary.NetTotal * (entry.Rate / 100));
+                tax += orderSummary.NetTotal * entry.Rate;
             }
 
             var expectedResult = tax + orderSummary.NetTotal;
