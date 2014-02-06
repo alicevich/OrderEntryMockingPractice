@@ -356,7 +356,6 @@ namespace OrderEntryMockingPracticeTests
 
             // Act
             var orderSummary = orderService.PlaceOrder(order);
-            var orderSummaryTaxEntries = orderSummary.Taxes;
             var result = orderSummary.Total;
 
             double tax = 0;
