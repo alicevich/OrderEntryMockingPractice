@@ -22,6 +22,7 @@ namespace OrderEntryMockingPracticeTests
             this.MockCustomerRepository = MockRepository.GenerateMock<ICustomerRepository>();
             this.MockTaxRateService = MockRepository.GenerateMock<ITaxRateService>();
             this.MockEmailService = MockRepository.GenerateMock<IEmailService>();
+            this.orderService = new OrderService(MockProductRepository, MockOrderFulfillmentService, MockCustomerRepository, MockTaxRateService, MockEmailService);
         }
 
         protected IProductRepository MockProductRepository { get; set; }
@@ -29,13 +30,12 @@ namespace OrderEntryMockingPracticeTests
         protected ICustomerRepository MockCustomerRepository { get; set; }
         protected ITaxRateService MockTaxRateService { get; set; }
         protected IEmailService MockEmailService { get; set; }
+        protected OrderService orderService { get; set; }
 
         [Test]
         public void PlaceOrder_WhenOrderItemsAreNotUnique_ThrowsValidationFailedException()
         {
             // Arrange
-            var orderService = new OrderService(null, MockOrderFulfillmentService, MockCustomerRepository, MockTaxRateService, MockEmailService);
-            
             var order = MockRepository.GenerateStub<Order>();
             order
                 .Stub(o => o.OrderItemsAreUniqueByProduct())
@@ -52,16 +52,14 @@ namespace OrderEntryMockingPracticeTests
         public void PlaceOrder_WhenOrderItemsAreUnique_DoesNotThrowValidationFailedException()
         {
             // Arrange
-            var orderService = new OrderService(null, MockOrderFulfillmentService, MockCustomerRepository, MockTaxRateService, MockEmailService);
-            
             var order = MockRepository.GenerateStub<Order>();
             order
                 .Stub(o => o.OrderItemsAreUniqueByProduct())
                 .Return(true);
 
-            GenerateNewCustomer(order);
-            GenerateNewListOfTaxEntries();
-            GenerateNewOrderConfirmation(order);
+            StubCustomer(order);
+            StubTaxEntries();
+            StubOrderConfirmation(order);
 
             // Act / Assert
             Assert.DoesNotThrow(() => orderService.PlaceOrder(order));
@@ -71,8 +69,7 @@ namespace OrderEntryMockingPracticeTests
         public void PlaceOrder_SomeProductsAreNotInStock_ThrowsValidationFailedException()
         {
             // Arrange
-            var orderService = new OrderService(MockProductRepository, MockOrderFulfillmentService, MockCustomerRepository, MockTaxRateService, MockEmailService);
-            var order = CreateInvalidOrderContainingProductsOutOfStock(MockProductRepository);
+           var order = CreateInvalidOrderContainingProductsOutOfStock(MockProductRepository);
 
             // Act
             var exception = Assert.Throws<ValidationFailedException>(() => orderService.PlaceOrder(order));
@@ -113,12 +110,11 @@ namespace OrderEntryMockingPracticeTests
         public void PlaceOrder_AllOrderItemsInStock_DoesNotThrowValidationFailedException()
         {
             // Arrange
-            var orderService = new OrderService(MockProductRepository, MockOrderFulfillmentService, MockCustomerRepository, MockTaxRateService, MockEmailService);
-            var order = CreateAValidOrder(MockProductRepository);
+           var order = CreateAValidOrder(MockProductRepository);
 
-            GenerateNewCustomer(order);
-            GenerateNewListOfTaxEntries();
-            GenerateNewOrderConfirmation(order);
+            StubCustomer(order);
+            StubTaxEntries();
+            StubOrderConfirmation(order);
 
             // Act / Assert
             Assert.DoesNotThrow(() => orderService.PlaceOrder(order));
@@ -156,12 +152,11 @@ namespace OrderEntryMockingPracticeTests
         public void PlaceOrder_OrderIsValid_ReturnsOrderSummary()
         {
             // Arrange
-            var orderService = new OrderService(MockProductRepository, MockOrderFulfillmentService, MockCustomerRepository, MockTaxRateService, MockEmailService);
             var order = CreateAValidOrder(MockProductRepository);
 
-            GenerateNewCustomer(order);
-            GenerateNewListOfTaxEntries();
-            GenerateNewOrderConfirmation(order);
+            StubCustomer(order);
+            StubTaxEntries();
+            StubOrderConfirmation(order);
 
             // Act
             var result = orderService.PlaceOrder(order);
@@ -175,11 +170,10 @@ namespace OrderEntryMockingPracticeTests
         public void PlaceOrder_OrderIsValid_OrderIsSubmittedToOrderFulfillmentService()
         {
             // Arrange
-            var orderService = new OrderService(MockProductRepository, MockOrderFulfillmentService, MockCustomerRepository, MockTaxRateService, MockEmailService);
-            var order = CreateAValidOrder(MockProductRepository);
+           var order = CreateAValidOrder(MockProductRepository);
 
-            GenerateNewCustomer(order);
-            GenerateNewListOfTaxEntries();
+            StubCustomer(order);
+            StubTaxEntries();
 
             MockOrderFulfillmentService
                 .Expect(ofs => ofs.Fulfill(order))
@@ -194,11 +188,10 @@ namespace OrderEntryMockingPracticeTests
         public void PlaceOrder_OrderIsValid_ReturnsOrderSummaryContainingOrderNumberGeneratedByOrderFulfillmentService()
         {
             // Arrange
-            var orderService = new OrderService(MockProductRepository, MockOrderFulfillmentService, MockCustomerRepository, MockTaxRateService, MockEmailService);
             var order = CreateAValidOrder(MockProductRepository);
 
-            GenerateNewCustomer(order);
-            GenerateNewListOfTaxEntries();
+            StubCustomer(order);
+            StubTaxEntries();
             
             var orderConfirmation = CreateValidOrderConfirmation();
             MockOrderFulfillmentService
@@ -227,11 +220,10 @@ namespace OrderEntryMockingPracticeTests
         public void PlaceOrder_OrderIsValid_ReturnsOrderSummaryContainingOrderIDGeneratedByOrderFulfillmentService()
         {
             // Arrange
-            var orderService = new OrderService(MockProductRepository, MockOrderFulfillmentService, MockCustomerRepository, MockTaxRateService, MockEmailService); 
             var order = CreateAValidOrder(MockProductRepository);
 
-            GenerateNewCustomer(order);
-            GenerateNewListOfTaxEntries();
+            StubCustomer(order);
+            StubTaxEntries();
 
             var orderConfirmation = CreateValidOrderConfirmation();
             MockOrderFulfillmentService
@@ -251,15 +243,13 @@ namespace OrderEntryMockingPracticeTests
         public void PlaceOrder_OrderIsValid_ReturnsOrderSummaryWithTaxEntries()
         {
             // Arrange
-            var orderService = new OrderService(MockProductRepository, MockOrderFulfillmentService, MockCustomerRepository, MockTaxRateService, MockEmailService);
-
             var customer = CreateValidCustomer();
             var taxEntriesList = CreateValidTaxEntriesList();
 
             var order = CreateAValidOrder(MockProductRepository);
             order.CustomerId = customer.CustomerId;
 
-            GenerateNewOrderConfirmation(order);
+            StubOrderConfirmation(order);
 
             MockCustomerRepository
               .Stub(cr => cr.Get(order.CustomerId))
@@ -315,16 +305,15 @@ namespace OrderEntryMockingPracticeTests
         public void PlaceOrder_OrderIsValid_ReturnsOrderSummaryWithNetTotal()
         {
             // Arrange
-            var orderService = new OrderService(MockProductRepository, MockOrderFulfillmentService, MockCustomerRepository, MockTaxRateService, MockEmailService);
             var orderItems = CreateListOfOrderItems();
             var order = new Order()
                         {
                             OrderItems = orderItems
                         };
 
-            GenerateNewCustomer(order);
-            GenerateNewListOfTaxEntries();
-            GenerateNewOrderConfirmation(order);
+            StubCustomer(order);
+            StubTaxEntries();
+            StubOrderConfirmation(order);
 
             // Act
             double expectedResult = 0;
@@ -344,7 +333,6 @@ namespace OrderEntryMockingPracticeTests
         public void PlaceOrder_OrderIsValid_ReturnsOrderSummaryContainingOrderTotal()
         {
             // Arrange
-            var orderService = new OrderService(MockProductRepository, MockOrderFulfillmentService, MockCustomerRepository, MockTaxRateService, MockEmailService);
             var orderItems = CreateListOfOrderItems();
             var order = new Order()
                         {
@@ -356,7 +344,7 @@ namespace OrderEntryMockingPracticeTests
             var taxEntry = CreateValidTaxEntry();
             var taxEntriesList = new List<TaxEntry> {taxEntry};
 
-            GenerateNewOrderConfirmation(order);
+            StubOrderConfirmation(order);
 
             MockCustomerRepository
                 .Stub(cr => cr.Get(order.CustomerId))
@@ -387,12 +375,11 @@ namespace OrderEntryMockingPracticeTests
         public void PlaceOrder_OrderIsValid_ConfirmationEmailIsSentToCustomer()
         {
             // Arrange
-            var orderService = new OrderService(MockProductRepository, MockOrderFulfillmentService, MockCustomerRepository, MockTaxRateService, MockEmailService);
             var order = CreateAValidOrder(MockProductRepository);
 
-            GenerateNewCustomer(order);
-            GenerateNewListOfTaxEntries();
-            GenerateNewOrderConfirmation(order);
+            StubCustomer(order);
+            StubTaxEntries();
+            StubOrderConfirmation(order);
 
             var customerId = order.CustomerId;
             var orderId = MockOrderFulfillmentService.Fulfill(order).OrderId;
@@ -409,15 +396,14 @@ namespace OrderEntryMockingPracticeTests
         public void GetCustomerData__CustomerIdIsValid_ReturnCustomerContainingData()
         {
             // Arrange
-            var orderService = new OrderService(MockProductRepository, MockOrderFulfillmentService, MockCustomerRepository, MockTaxRateService, MockEmailService);
             var expectedCustomer = CreateValidCustomer();
             var order = new Order()
                         {
                             CustomerId = expectedCustomer.CustomerId
                         };
 
-            GenerateNewListOfTaxEntries();
-            GenerateNewOrderConfirmation(order);
+            StubTaxEntries();
+            StubOrderConfirmation(order);
 
             MockCustomerRepository
                 .Stub(cr => cr.Get(order.CustomerId))
@@ -434,7 +420,6 @@ namespace OrderEntryMockingPracticeTests
         public void GetTaxRates__CustomerIdIsValid_ReturnListOfTaxRates()
         {
             // Arrange
-            var orderService = new OrderService(MockProductRepository, MockOrderFulfillmentService, MockCustomerRepository, MockTaxRateService, MockEmailService);
             var customer = CreateValidCustomer();
             var order = new Order()
                         {
@@ -444,8 +429,8 @@ namespace OrderEntryMockingPracticeTests
             var taxEntry = CreateValidTaxEntry();
             var taxEntries = new List<TaxEntry> {taxEntry};
 
-            GenerateNewOrderConfirmation(order);
-            GenerateNewCustomer(order);
+            StubOrderConfirmation(order);
+            StubCustomer(order);
 
             MockTaxRateService
                 .Stub(trs => trs.GetTaxEntries(customer.PostalCode, customer.Country))
@@ -458,21 +443,21 @@ namespace OrderEntryMockingPracticeTests
             Assert.That(result, Is.EqualTo(taxEntries));
         }
 
-        private void GenerateNewOrderConfirmation(Order order)
+        private void StubOrderConfirmation(Order order)
         {
             MockOrderFulfillmentService
                 .Stub(ofs => ofs.Fulfill(order))
                 .Return(new OrderConfirmation());
         }
 
-        private void GenerateNewListOfTaxEntries()
+        private void StubTaxEntries()
         {
             MockTaxRateService
                 .Stub(trs => trs.GetTaxEntries("", ""))
                 .Return(new List<TaxEntry>());
         }
 
-        private void GenerateNewCustomer(Order order)
+        private void StubCustomer(Order order)
         {
             MockCustomerRepository
                 .Stub(cr => cr.Get(order.CustomerId))
